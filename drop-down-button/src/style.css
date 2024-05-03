@@ -1,0 +1,120 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --wrapper-width: 350px;
+    --wrapper-height: 250px;
+
+    --drop-down-width: var(--wrapper-width);
+    --drop-down-height: 100px;
+    --drop-down-color: lightgrey;
+}
+
+.drop-down-menu,
+.drop-down-wrapper {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+}
+
+.drop-down-wrapper {
+    top: calc(50vh - var(--wrapper-height) / 2);
+    left: calc(50vw - var(--wrapper-width) / 2);
+    width: var(--wrapper-width);
+    height: var(--wrapper-height);
+    align-items: center;
+}
+
+.drop-down-menu {
+    width: 150px;
+    background-color: var(--drop-down-color);
+    margin-top: 15px;
+    justify-content: space-around;
+    border-radius: 8px;
+}
+
+.drop-down-menu:before {
+    position: absolute;
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 10px 15px 10px;
+    border-color: transparent transparent var(--drop-down-color) transparent;
+    top: -15px;
+    left: 50%;
+}
+
+.drop-down-menu > button {
+    border: unset;
+    font-size: calc(1rem + 2px);
+    font-weight: 700;
+    color: deeppink;
+    background-color: unset;
+    margin: 2.5px 0;
+    flex: auto;
+    padding: 5px 5px 5px 5px;
+    display: flex;
+    gap: 0 15px;
+}
+
+.drop-down-menu > button:hover {
+    background-color: #bebebe;
+    color: white;
+}
+.drop-down-menu > button:nth-child(1) {
+    margin-top: 0;
+}
+.drop-down-menu > button:nth-child(1):hover {
+    border-radius:8px 8px 0 0;
+}
+.drop-down-menu > button:nth-child(4) {
+    margin-bottom: 0;
+}
+.drop-down-menu > button:nth-child(4):hover {
+    border-radius:0 0 8px 8px;
+}
+
+.Products > i,
+.History > i,
+.Options > i,
+.About > i {
+    width: 25px;
+    height: 25px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    filter: invert(29%) sepia(61%) saturate(6734%) hue-rotate(314deg)
+        brightness(98%) contrast(107%);
+}
+
+.Products > i {
+    background-image: url("./assets/noun-product-6750166.svg");
+}
+
+.History > i {
+    background-image: url("./assets/noun-history-5019532.svg");
+}
+
+.Options > i {
+    background-image: url("./assets/noun-options-5572612.svg");
+}
+
+.About > i {
+    background-image: url("./assets/noun-about-497782.svg");
+}
+
+.drop-down-menu.hidden {
+    opacity: 0;
+}
+
+.drop-down-button {
+    width: 150px;
+    height: 25px;
+    align-self: center;
+}

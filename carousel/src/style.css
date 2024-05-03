@@ -1,0 +1,140 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    /* border: 2px solid black; */
+}
+
+:root {
+    --panel-height: 600px;
+    --panel-width: calc(var(--panel-height) * 1.6);
+    --panel-color: #ff1493;
+}
+
+html {
+    border: 0;
+}
+
+body {
+    border: 0;
+    height: 100vh;
+}
+
+.wrapper {
+    border: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.panel {
+    position: relative;
+    height: calc(var(--panel-height) + 20px);
+    width: calc(var(--panel-width) + 20px);
+    overflow: hidden;
+    border: 5px solid var(--panel-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    height: var(--panel-height);
+    width: max-content;
+    display: flex;
+}
+
+.left-arrow,
+.right-arrow {
+    position: absolute;
+    width: 27px;
+    height: 27px;
+    border: 2px solid black;
+    border-radius: 50%;
+    transition: scale 0.5s;
+    filter: invert(21%) sepia(48%) saturate(7394%) hue-rotate(319deg)
+        brightness(109%) contrast(101%);
+}
+
+.left-arrow:hover,
+.right-arrow:hover {
+    cursor: pointer;
+    scale: 1.2;
+}
+
+.left-arrow {
+    background-image: url("./assets/arrow-left.svg");
+    top: calc(var(--panel-height) / 2 - 13.5px);
+    left: 10px;
+}
+
+.right-arrow {
+    background-image: url("./assets/arrow-right.svg");
+    top: calc(var(--panel-height) / 2 - 13.5px);
+    left: calc(var(--panel-width) - 25px);
+}
+
+.image-1 {
+    background-image: url("./assets/wallhaven-1pkp81.jpg");
+    opacity: 0;
+}
+
+.image-2 {
+    background-image: url("./assets/wallhaven-d6kewl.jpg");
+    opacity: 0;
+}
+
+.image-3 {
+    background-image: url("./assets/wallhaven-gp5y2e.png");
+    opacity: 0;
+}
+
+.image-4 {
+    background-image: url("./assets/wallhaven-jxx3kw.jpg");
+    opacity: 0;
+}
+
+.image-1,
+.image-2,
+.image-3,
+.image-4 {
+    width: var(--panel-width);
+    height: var(--panel-height);
+    background-size: contain;
+    opacity: 1;
+    transition: background-image 1s, opacity 1s ease-out;
+}
+
+.dot-wrapper {
+    position: absolute;
+    width: 100px;
+    height: 50px;
+    top: calc(var(--panel-height) - 50px);
+    left: calc(var(--panel-width) / 2 - 50px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0 15px;
+}
+
+.dot {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: var(--panel-color);
+    transition: scale 0.5s;
+}
+
+.dot.selected {
+    outline: var(--panel-color) solid 2px;
+    outline-offset: 2px;
+}
+
+.dot:hover {
+    cursor: pointer;
+    scale: 1.2;
+}
