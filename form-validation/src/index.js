@@ -84,17 +84,17 @@ class Form {
         );
         const pwd = document.querySelector("#pwd");
         const pwdValidation = document.querySelector("#pwdValidation");
-        console.log(inputDivs, errorMessages);
 
         for (let i = 0; i < 4; i++) {
             setConstraints(inputDivs[i]);
 
             inputDivs[i].addEventListener("input", (e) => {
-                // console.log(e.target.validity.valid);
                 if (e.target.validity.valid) {
                     errorMessages[i].textContent = "";
                     errorMessages[i].className = "error";
+                    e.target.parentElement.className = "form-input-wrapper"
                 } else {
+                    e.target.parentElement.classList.add("error")
                     showError(e.target);
                 }
             });
@@ -103,14 +103,15 @@ class Form {
         for (let k = 4; k < 6; k++) {
             setConstraints(inputDivs[k]);
             inputDivs[k].addEventListener("keyup", (e) => {
-                console.log(pwd.value !== pwdValidation.value);
                 if (!e.target.checkValidity()) {
                     showError(e.target);
-                }
-                if (pwd.value !== pwdValidation.value) {
+                    e.target.parentElement.classList.add("error")
+                } else if (pwd.value !== pwdValidation.value) {
                     e.target.setCustomValidity(".");
                     showError(e.target);
+                    e.target.parentElement.classList.add("error")
                 } else {
+                    e.target.parentElement.className = "form-input-wrapper"
                     errorMessages[4].textContent = "";
                     errorMessages[4].className = "error";
                     inputDivs[4].setCustomValidity("");
@@ -122,7 +123,6 @@ class Form {
         }
 
         Form.form.addEventListener("submit", (event) => {
-
             for (let input of inputDivs) {
                 if (!input.checkValidity()) {
                     event.preventDefault();
@@ -185,7 +185,7 @@ class Form {
                 target.nextSibling.textContent = "This field is required";
             } else if (targetID == "zip-code") {
                 target.nextSibling.textContent = "This field is required";
-            } else if (targetID == "pwd") {
+            } else if (targetID == "pwd" || targetID == "pwdValidation") {
                 if (target.validity.valueMissing) {
                     target.nextSibling.textContent = "The email field is empty";
                 } else if (target.validity.tooShort) {
