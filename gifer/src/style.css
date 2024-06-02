@@ -16,7 +16,8 @@ div {
     margin-top: 50px;
     width: 500px;
     height: 500px;
-    align-self: center;
+    align-content: center;
+    text-align: center;
 }
 
 img {
@@ -34,7 +35,6 @@ input {
 button {
     width: 150px;
     height: 25px;
-    align-self: center;
 }
 
 div,
