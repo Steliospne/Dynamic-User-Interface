@@ -2,6 +2,7 @@ export default class WeatherCard {
   static set(locationData, weatherData) {
     WeatherCard.locationData = locationData;
     WeatherCard.weatherData = weatherData;
+
     document.querySelector(".city-field").textContent = WeatherCard.locationData.city;
     document.querySelector(".tempStatus-field").innerHTML = `${WeatherCard.weatherData.current.temp_c} &deg C | ${WeatherCard.weatherData.current.condition.text}`;
   }
@@ -26,5 +27,7 @@ export default class WeatherCard {
     cardHeader.append(locationField, cityField, tempStatusField);
     cardContainer.append(cardHeader);
     document.body.append(cardContainer);
+
+    return cardContainer
   }
 }

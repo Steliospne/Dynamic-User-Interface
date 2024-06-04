@@ -40,7 +40,8 @@ body {
 }
 
 .navbar {
-    margin-top: auto;
+    position: relative;
+    top: -100px;
     height: 100px;
     background-color: rgba(0, 0, 0, 0.24);
 }
@@ -48,23 +49,27 @@ body {
 .add-location {
     padding: 20px;
 }
-.pop-up.on,
-.pop-up.off {
+.menu.on,
+.menu.off {
     transform: translate(0%, -100%);
     background-color: black;
-    position: relative;
-    top:-100px;
+    position: absolute;
 }
 
-.pop-up.on{
+.menu.on{
     width: 50vw;
     height: 50vh;
     transition: all 0.2s ease-out;
 }
 
-.pop-up.off {
+.menu.off {
     width: 0;
     height: 0;
     transition: all  0.2s ease-in;
+}
+
+.show {
+    height: 100%;
+    display: flex;
 }
   

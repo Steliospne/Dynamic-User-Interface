@@ -1,5 +1,5 @@
 import "./style.css";
-import getLocation from "./ipAPI";
+import getLocation from "./locationAPI";
 import getWeatherData from "./weatherAPI";
 import WeatherCard from "./WeatherCard";
 import NavBar from "./navBar";

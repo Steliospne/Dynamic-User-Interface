@@ -1,39 +1,41 @@
 export default class NavBar {
   static create() {
     const nav = document.createElement("div");
-    const addLocationButton = document.createElement("button");
-    const buttonIcon = document.createElement("i");
-
     nav.className = "navbar";
-    addLocationButton.className = "add-location";
-    buttonIcon.className = "button-icon";
 
-    addLocationButton.textContent = "=";
-
-    addLocationButton.append(buttonIcon);
-    nav.append(addLocationButton);
-    document.querySelector(".card-container").append(nav);
-
-    NavBar.eventSetter();
+    nav.append(NavBar.createMenu(), NavBar.menuButton());
+    document.body.append(nav);
   }
 
-  static eventSetter() {
-    let state = 0;
-    const popUp = document.createElement("div");
-    popUp.className = "pop-up off";
-    document.body.append(popUp);
+  static menuButton() {
+    const menuButtonEl = document.createElement("button");
+    const buttonIcon = document.createElement("i");
+    menuButtonEl.className = "add-location";
+    buttonIcon.className = "button-icon";
+
+    menuButtonEl.textContent = "=";
+    menuButtonEl.append(buttonIcon);
+
+    let menu_state = 0;
+    menuButtonEl.addEventListener("click", buttonHandler);
     function buttonHandler() {
-      state = state == 0 ? 1 : 0;
-      if (state) {
-        popUp.classList.add("on");
-        popUp.classList.remove("off");
+      const menu = document.querySelector(".menu");
+      menu_state = menu_state == 0 ? 1 : 0;
+      if (menu_state) {
+        menu.classList.add("on");
+        menu.classList.remove("off");
       } else {
-        popUp.classList.remove("on");
-        popUp.classList.add("off");
+        menu.classList.remove("on");
+        menu.classList.add("off");
       }
     }
-    document
-      .querySelector(".add-location")
-      .addEventListener("click", buttonHandler);
+
+    return menuButtonEl;
+  }
+
+  static createMenu() {
+    const menu = document.createElement("div");
+    menu.className = "menu off";
+    return menu;
   }
 }
