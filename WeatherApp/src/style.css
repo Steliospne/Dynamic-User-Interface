@@ -1,75 +1,127 @@
 *,
 *::before,
 *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    height: 100vh;
-    position: relative;
+  height: 100vh;
+  position: relative;
 }
 
 .card-container,
 .card-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .card-container {
-    height: 100%;
-    background-color: rgb(127, 225, 255);
-    
+  height: 100%;
+  background-color: rgb(127, 225, 255);
 }
 
 .card-header {
-    border: 6px solid black;
-    padding: 10px;
-    gap: 10px;
+  border: 6px solid black;
+  padding: 10px;
+  gap: 10px;
 }
 
 .card-header > .location-field {
-    font-size: 1.5rem;
+  grid-area: location;
+  font-size: 1.5rem;
+}
+
+.card-header > .city-field {
+  grid-area: city;
+}
+
+.card-header > .tempStatus-field {
+  grid-area: temp;
+  grid-row: span 1;
 }
 
 .card-header,
 .navbar {
-    width: 100vw;
+  width: 100vw;
 }
 
 .navbar {
-    position: relative;
-    top: -100px;
-    height: 100px;
-    background-color: rgba(0, 0, 0, 0.24);
+  position: relative;
+  top: -100px;
+  height: 100px;
+  background-color: rgba(0, 0, 0, 0.24);
 }
 
 .add-location {
-    padding: 20px;
+  padding: 20px;
 }
+
 .menu.on,
 .menu.off {
-    transform: translate(0%, -100%);
-    background-color: black;
-    position: absolute;
+  transform: translate(0%, -100%);
+  background-color: black;
+  position: absolute;
 }
 
-.menu.on{
-    width: 50vw;
-    height: 50vh;
-    transition: all 0.2s ease-out;
+.menu.on {
+  width: 50vw;
+  height: 50vh;
+  transition: all 0.2s ease-out;
 }
 
 .menu.off {
-    width: 0;
-    height: 0;
-    transition: all  0.2s ease-in;
+  width: 0;
+  height: 0;
+  transition: all 0.2s ease-in;
 }
 
-.show {
-    height: 100%;
-    display: flex;
+
+.small-view.on,
+.small-view.off {
+  color: aliceblue;
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: space-between;
+  padding: 10px;
+  border: 2px solid white;
+  grid-template-areas:
+    "location temp"
+    "city temp";
 }
-  
+
+.search-wrapper.on,
+.search-wrapper.off {
+
+}
+
+.search-wrapper.on, 
+.small-view.on {
+  width: auto;
+  height: auto;
+  visibility: visible;
+  transition: all 0.2s ease-out;
+}
+
+.search-wrapper.off, 
+.small-view.off {
+  width: 0;
+  height: 0;
+  visibility: hidden;
+  overflow: hidden;
+  transition: all 0.2s ease-in;
+}
+
+.small-view > .location-field {
+  grid-area: location;
+}
+
+.small-view > .city-field {
+  grid-area: city;
+}
+
+.small-view > .tempStatus-field {
+  grid-area: temp;
+}
