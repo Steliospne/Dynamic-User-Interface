@@ -3,6 +3,7 @@ import getLocation from "./locationAPI";
 import getWeatherData from "./weatherAPI";
 import WeatherCard from "./WeatherCard";
 import NavBar from "./navBar";
+import Views from "./views";
 
 const dummyLocation = {
   city: "Schiedam",
@@ -11,8 +12,8 @@ const dummyLocation = {
 const dummyWeather = {
   current: {
     temp_c: 25,
-    condition: { 
-      text: "Rain" 
+    condition: {
+      text: "Rain",
     },
   },
 };
@@ -31,6 +32,6 @@ async function getherData() {
 }
 
 WeatherCard.create();
-NavBar.create();
 getherData();
-
+Views.init();
+NavBar.create();
