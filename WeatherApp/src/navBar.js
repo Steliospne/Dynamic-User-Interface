@@ -56,9 +56,19 @@ export default class NavBar {
     inputCity.id = "city";
     inputCity.name = "city";
     inputCity.placeholder = "Search for city or town"
+    searchButton.className = "search-btn"
     searchWrapper.append(inputCity, searchButton)
     menu.append(searchWrapper);
 
+    function searchHandler() {
+      let input = inputCity.value;
+      console.log(input)
+      if(!input) return
+      inputCity.value = ""
+    }
+
+    searchButton.addEventListener('click', searchHandler)
+    
     smallViews.forEach((view) => {
       menu.append(view);
     });
