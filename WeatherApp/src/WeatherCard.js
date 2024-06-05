@@ -30,4 +30,8 @@ export default class WeatherCard {
 
     return cardContainer
   }
+
+  static getHeader() {
+    return document.querySelector(".card-header").cloneNode(true);
+  }
 }
