@@ -11,13 +11,29 @@ const dummyLocation = {
 
 const dummyWeather = {
   current: {
-    temp_c: 25,
+    temp_c: 15,
     condition: {
       text: "Rain",
     },
   },
 };
 
+export function sendData() {
+  const data = [
+    {
+      city: "London",
+    },
+    {
+      current: {
+        temp_c: 25,
+        condition: {
+          text: "Sunny",
+        },
+      },
+    },
+  ];
+  return data;
+}
 async function getherData() {
   try {
     // let locationData = await getLocation();
@@ -25,13 +41,12 @@ async function getherData() {
     // WeatherCard.set(locationData, weatherData);
 
     // Test to not waste API calls
-    WeatherCard.set(dummyLocation, dummyWeather);
+    Views.big[0].set(dummyLocation, dummyWeather);
   } catch (error) {
     throw error;
   }
 }
 
-WeatherCard.create();
-getherData();
 Views.init();
+getherData();
 NavBar.create();
