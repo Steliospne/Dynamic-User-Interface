@@ -1,4 +1,7 @@
+import { sendData } from ".";
+import WeatherCard from "./WeatherCard";
 import Views from "./views";
+import { swipedetect } from "./touch";
 
 export default class NavBar {
   static create() {
@@ -23,6 +26,12 @@ export default class NavBar {
 
     function buttonHandler() {
       const menu = document.querySelector(".menu");
+      const menuList = Array.from(menu.childNodes);
+      const smallViewList = Views.getSmallViews();
+      console.log(menuList);
+      // const smallCardWrapper = document.querySelector(".small-card-wrapper");
+      smallViewList.forEach((item) => menu.append(item));
+
       menu_state = menu_state == 0 ? 1 : 0;
 
       if (menu_state) {
@@ -31,6 +40,10 @@ export default class NavBar {
         menu.childNodes.forEach((child) => {
           child.classList.add("on");
           child.classList.remove("off");
+        });
+
+        smallViewList.forEach((item) => {
+          if (!menuList.includes(item)) menuList.push(item);
         });
       } else {
         menu.classList.remove("on");
@@ -47,33 +60,62 @@ export default class NavBar {
 
   static createMenu() {
     const menu = document.createElement("div");
-    const smallViews = Views.getSmallViews();
     const searchWrapper = document.createElement("div");
     const inputCity = document.createElement("input");
     const searchButton = document.createElement("button");
+    // const smallCardWrapper = document.createElement("div");
 
     searchWrapper.className = "search-wrapper off";
     inputCity.id = "city";
     inputCity.name = "city";
-    inputCity.placeholder = "Search for city or town"
-    searchButton.className = "search-btn"
-    searchWrapper.append(inputCity, searchButton)
+    inputCity.placeholder = "Search for city or town";
+    searchButton.className = "search-btn";
+    // smallCardWrapper.className = "small-card-wrapper";
+
+    searchWrapper.append(inputCity, searchButton);
     menu.append(searchWrapper);
 
     function searchHandler() {
       let input = inputCity.value;
-      console.log(input)
-      if(!input) return
-      inputCity.value = ""
+      if (!input) return;
+      let data1, data2;
+      [data1, data2] = sendData();
+      // console.log(data1, data2);
+      const newView = new WeatherCard();
+      newView.set(data1, data2);
+      newView.setLocation(input);
+      Views.setView(newView);
+
+      function hoverInHandler() {
+        const delButton = document.createElement("button");
+        delButton.className = "delete-btn";
+        newView.smallView.append(delButton);
+      }
+
+      function hoverOutHandler() {
+        newView.smallView.lastChild.remove();
+      }
+
+      if (newView.smallView.firstChild.textContent !== "My Location") {
+        newView.smallView.addEventListener("mouseenter", hoverInHandler);
+        newView.smallView.addEventListener("mouseleave", hoverOutHandler);
+
+        swipedetect(newView.smallView, function (swipedir) {
+          if (swipedir == "left") hoverInHandler();
+          if (
+            swipedir == "right" &&
+            newView.smallView.lastChild.outerHTML.includes("button")
+          ) {
+            hoverOutHandler();
+          }
+        });
+      }
+      menu.append(newView.smallView)
+      inputCity.value = "";
     }
+    searchButton.addEventListener("click", searchHandler);
 
-    searchButton.addEventListener('click', searchHandler)
-    
-    smallViews.forEach((view) => {
-      menu.append(view);
-    });
     menu.className = "menu off";
-
 
     return menu;
   }
