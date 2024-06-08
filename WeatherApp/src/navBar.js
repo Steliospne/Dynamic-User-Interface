@@ -15,10 +15,9 @@ export default class NavBar {
   static menuButton() {
     const menuButtonEl = document.createElement("button");
     const buttonIcon = document.createElement("i");
-    menuButtonEl.className = "add-location";
+    menuButtonEl.className = "menu-btn";
     buttonIcon.className = "button-icon";
 
-    menuButtonEl.textContent = "=";
     menuButtonEl.append(buttonIcon);
 
     let menu_state = 0;
@@ -28,8 +27,7 @@ export default class NavBar {
       const menu = document.querySelector(".menu");
       const menuList = Array.from(menu.childNodes);
       const smallViewList = Views.getSmallViews();
-      console.log(menuList);
-      // const smallCardWrapper = document.querySelector(".small-card-wrapper");
+
       smallViewList.forEach((item) => menu.append(item));
 
       menu_state = menu_state == 0 ? 1 : 0;
@@ -89,31 +87,52 @@ export default class NavBar {
       function hoverInHandler() {
         const delButton = document.createElement("button");
         delButton.className = "delete-btn";
-        newView.smallView.append(delButton);
+        newView.smallCard.append(delButton);
+
+        function deleteButtonHandler(event) {
+          const target = event.target.parentNode;
+          const cardContainers =
+            document.querySelector(".display-container").childNodes;
+          let cardToRemove = Array.from(cardContainers).filter((node) => {
+            return node.id == target.id;
+          });
+          Views.deleteView(target.id);
+          cardToRemove[0].remove();
+          target.remove();
+        }
+        delButton.addEventListener("click", deleteButtonHandler);
+        delButton.addEventListener("touchstart", deleteButtonHandler);
       }
 
       function hoverOutHandler() {
-        newView.smallView.lastChild.remove();
+        newView.smallCard.lastChild.remove();
       }
 
-      if (newView.smallView.firstChild.textContent !== "My Location") {
-        newView.smallView.addEventListener("mouseenter", hoverInHandler);
-        newView.smallView.addEventListener("mouseleave", hoverOutHandler);
+      if (newView.smallCard.firstChild.textContent !== "My Location") {
+        newView.smallCard.addEventListener("mouseenter", hoverInHandler);
+        newView.smallCard.addEventListener("mouseleave", hoverOutHandler);
 
-        swipedetect(newView.smallView, function (swipedir) {
-          if (swipedir == "left") hoverInHandler();
+        swipedetect(newView.smallCard, function (swipedir) {
+          if (
+            swipedir == "left" &&
+            !newView.smallCard.lastChild.outerHTML.includes("button")
+          )
+            hoverInHandler();
           if (
             swipedir == "right" &&
-            newView.smallView.lastChild.outerHTML.includes("button")
+            newView.smallCard.lastChild.outerHTML.includes("button")
           ) {
             hoverOutHandler();
           }
         });
       }
-      menu.append(newView.smallView)
+      menu.append(newView.smallCard);
       inputCity.value = "";
     }
     searchButton.addEventListener("click", searchHandler);
+    menu.addEventListener("keydown", (event) => {
+      event.key == "Enter" ? searchHandler() : 0;
+    });
 
     menu.className = "menu off";
 
