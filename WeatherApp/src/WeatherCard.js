@@ -3,8 +3,8 @@ export default class WeatherCard {
     this.id;
     this.locationData = "";
     this.weatherData = "";
-    this.bigView = WeatherCard.create();
-    this.smallView = WeatherCard.createHeader();
+    this.bigCard = WeatherCard.create();
+    this.smallCard = WeatherCard.createHeader();
     this.location = "";
   }
 
@@ -12,24 +12,24 @@ export default class WeatherCard {
     this.locationData = locationData;
     this.weatherData = weatherData;
 
-    this.bigView.firstChild.childNodes[1].textContent = this.locationData.city;
-    this.bigView.firstChild.childNodes[2].innerHTML = `${this.weatherData.current.temp_c} &deg C | ${this.weatherData.current.condition.text}`;
+    this.bigCard.firstChild.childNodes[1].textContent = this.locationData.city;
+    this.bigCard.firstChild.childNodes[2].innerHTML = `${this.weatherData.current.temp_c} &deg C | ${this.weatherData.current.condition.text}`;
 
-    this.smallView.childNodes[1].textContent = this.locationData.city;
-    this.smallView.childNodes[2].innerHTML = `${this.weatherData.current.temp_c} &deg C | ${this.weatherData.current.condition.text}`;
+    this.smallCard.childNodes[1].textContent = this.locationData.city;
+    this.smallCard.childNodes[2].innerHTML = `${this.weatherData.current.temp_c} &deg C | ${this.weatherData.current.condition.text}`;
   }
 
   setLocation(location) {
     this.location = location;
-    this.smallView.childNodes[0].textContent = this.location;
+    this.smallCard.childNodes[0].textContent = this.location;
   }
 
-  getBigView() {
-    return this.bigView;
+  getBigCard() {
+    return this.bigCard;
   }
 
-  getSmallView() {
-    return this.smallView;
+  getSmallCard() {
+    return this.smallCard;
   }
 
   render(view) {
@@ -62,4 +62,8 @@ export default class WeatherCard {
 
     return cardHeader;
   }
+
+  static hourlyForecast() {}
+
+  static _3dayForecast() {}
 }
