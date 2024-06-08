@@ -12,42 +12,50 @@ export default class Views {
     displayContainer.className = "display-container";
     document.body.append(displayContainer);
 
-    Views.big.push(initialView);
-    Views.big.forEach((obj) => {
-      obj.id = Views.counterBig;
-      obj.bigView.id = Views.counterBig;
-      Views.counterBig++;
-      Views.render(obj.bigView);
-    });
+    Views.setView(initialView);
+    // Views.big.push(initialView);
+    // Views.big.forEach((obj) => {
+    //   obj.id = Views.counterBig;
+    //   obj.bigCard.id = Views.counterBig;
+    //   Views.counterBig++;
+    //   Views.render(obj.bigCard);
+    // });
 
-    Views.small.push(initialView.getSmallView());
-    Views.small.forEach((view) => {
-      view.id = Views.counterSmall;
-      view.className = "small-view off";
-      Views.counterSmall++;
-    });
+    // Views.small.push(initialView.getSmallCard());
+    // Views.small.forEach((view) => {
+    //   view.id = Views.counterSmall;
+    //   view.className = "small-view off";
+    //   Views.counterSmall++;
+    // });
   }
 
   static getSmallViews() {
     return Views.small;
   }
 
+  static deleteView(id) {
+    Views.big = Views.big.filter((view) => view.id !== +id);
+    Views.small = Views.small.filter((view) => view.id !== id);
+  }
+
   static setView(view) {
     Views.big.push(view);
     Views.big.forEach((obj) => {
       obj.id = Views.counterBig;
-      obj.bigView.id = Views.counterBig;
+      obj.bigCard.id = Views.counterBig;
       Views.counterBig++;
-      Views.render(obj.bigView);
+      Views.render(obj.bigCard);
     });
-    Views.small.push(view.getSmallView());
+    Views.small.push(view.getSmallCard());
     Views.small.forEach((view) => {
+      view.id = Views.counterSmall;
       view.className = "small-view on";
+      Views.counterSmall++;
     });
   }
 
   static render(view) {
-    const displayContainer = document.querySelector(".display-container")
+    const displayContainer = document.querySelector(".display-container");
     // displayContainer.innerHTML = "";
     displayContainer.append(view);
   }
