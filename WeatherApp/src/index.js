@@ -38,6 +38,10 @@ async function getherData() {
   try {
     // let locationData = await getLocation();
     // let weatherData = await getWeatherData(locationData.city);
+    // let weatherData = await getWeatherData("Schiedam");
+    // let weatherData2 = await getWeatherData("London");
+    // localStorage.setItem("weatherData",JSON.stringify(weatherData))
+    // localStorage.setItem("weatherData2",JSON.stringify(weatherData2))
     // WeatherCard.set(locationData, weatherData);
 
     // Test to not waste API calls
