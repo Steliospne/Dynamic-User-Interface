@@ -1,14 +1,17 @@
-import { sendData } from ".";
 import WeatherCard from "./WeatherCard";
 import Views from "./views";
 import { swipedetect } from "./touch";
+import APIs from "./APIs";
 
 export default class NavBar {
+  static menu = NavBar.createMenu();
+  static menuButton = NavBar.menuButton();
+
   static create() {
     const nav = document.createElement("div");
     nav.className = "navbar";
 
-    nav.append(NavBar.createMenu(), NavBar.menuButton());
+    nav.append(NavBar.menu, NavBar.menuButton);
     document.body.append(nav);
   }
 
@@ -72,70 +75,74 @@ export default class NavBar {
 
     searchWrapper.append(inputCity, searchButton);
     menu.append(searchWrapper);
-
-    function searchHandler() {
-      let input = inputCity.value;
-      if (!input) return;
-      let data1, data2;
-      [data1, data2] = sendData();
-      // console.log(data1, data2);
-      const newView = new WeatherCard();
-      newView.set(data1, data2);
-      newView.setLocation(input);
-      Views.setView(newView);
-
-      function hoverInHandler() {
-        const delButton = document.createElement("button");
-        delButton.className = "delete-btn";
-        newView.smallCard.append(delButton);
-
-        function deleteButtonHandler(event) {
-          const target = event.target.parentNode;
-          const cardContainers =
-            document.querySelector(".display-container").childNodes;
-          let cardToRemove = Array.from(cardContainers).filter((node) => {
-            return node.id == target.id;
-          });
-          Views.deleteView(target.id);
-          cardToRemove[0].remove();
-          target.remove();
-        }
-        delButton.addEventListener("click", deleteButtonHandler);
-        delButton.addEventListener("touchstart", deleteButtonHandler);
-      }
-
-      function hoverOutHandler() {
-        newView.smallCard.lastChild.remove();
-      }
-
-      if (newView.smallCard.firstChild.textContent !== "My Location") {
-        newView.smallCard.addEventListener("mouseenter", hoverInHandler);
-        newView.smallCard.addEventListener("mouseleave", hoverOutHandler);
-
-        swipedetect(newView.smallCard, function (swipedir) {
-          if (
-            swipedir == "left" &&
-            !newView.smallCard.lastChild.outerHTML.includes("button")
-          )
-            hoverInHandler();
-          if (
-            swipedir == "right" &&
-            newView.smallCard.lastChild.outerHTML.includes("button")
-          ) {
-            hoverOutHandler();
-          }
-        });
-      }
-      menu.append(newView.smallCard);
-      inputCity.value = "";
-    }
     searchButton.addEventListener("click", searchHandler);
     menu.addEventListener("keydown", (event) => {
       event.key == "Enter" ? searchHandler() : 0;
     });
 
     menu.className = "menu off";
+    async function searchHandler() {
+      try {
+        let input = inputCity.value;
+        if (!input) return;
+        const card = await APIs.getWeather(input);
+        console.log(card);
+        NavBar.smallCardHandlers(card);
+        menu.append(card.smallCard);
+        Views.render(Views.big)
+        inputCity.value = "";
+        Views.storedViews.push(input);
+        localStorage.setItem("Stored_views", JSON.stringify(Views.storedViews));
+      } catch (error) {
+        console.log(error);
+      }
+    }
 
     return menu;
+  }
+
+  static smallCardHandlers(card) {
+    function hoverInHandler() {
+      const delButton = document.createElement("button");
+      delButton.className = "delete-btn";
+      card.smallCard.append(delButton);
+
+      function deleteButtonHandler(event) {
+        const target = event.target.parentNode;
+        const cardContainers =
+          document.querySelector(".display-container").childNodes;
+        let cardToRemove = Array.from(cardContainers).filter((node) => {
+          return node.id == target.id;
+        });
+        Views.deleteView(target.id);
+        cardToRemove[0].remove();
+        target.remove();
+      }
+      delButton.addEventListener("click", deleteButtonHandler);
+      delButton.addEventListener("touchstart", deleteButtonHandler);
+    }
+
+    function hoverOutHandler() {
+      card.smallCard.lastChild.remove();
+    }
+
+    if (card.smallCard.firstChild.textContent !== "My Location") {
+      card.smallCard.addEventListener("mouseenter", hoverInHandler);
+      card.smallCard.addEventListener("mouseleave", hoverOutHandler);
+
+      swipedetect(card.smallCard, function (swipedir) {
+        if (
+          swipedir == "left" &&
+          !card.smallCard.lastChild.outerHTML.includes("button")
+        )
+          hoverInHandler();
+        if (
+          swipedir == "right" &&
+          card.smallCard.lastChild.outerHTML.includes("button")
+        ) {
+          hoverOutHandler();
+        }
+      });
+    }
   }
 }
