@@ -9,6 +9,7 @@
 body {
   height: 100vh;
   position: relative;
+  overflow: hidden;
 }
 .display-container {
   height: 100%;
@@ -26,9 +27,25 @@ body {
 .small-view.on,
 .card-container {
   height: 100%;
-  background-image: url('./assets/sunny.jpg');
   background-size: cover;
   background-position: center;
+}
+.small-view.sunny,
+.card-container.sunny {
+  background-image: url("./assets/sunny.jpg");
+}
+.small-view.rain,
+.card-container.rain {
+  background-image: url("./assets/rain.jpg");
+}
+.small-view.cloudy,
+.card-container.cloudy {
+  background-image: url("./assets/cloudy.jpg");
+}
+
+.small-view.partly-cloudy,
+.card-container.partly-cloudy {
+  background-image: url("./assets/partly-cloudy.jpg");
 }
 
 .card-header {
@@ -66,10 +83,22 @@ body {
 .menu-btn {
   padding: 20px;
   margin: 10px;
-  background: unset;
-  border: unset;
-  background-image: url('./assets/menu-icon.svg');
+  background: skyblue;
+  border: white solid 2px;
+  border-radius: 6px;
+  background-image: url("./assets/menu-icon.svg");
   background-size: cover;
+  border-color: #97adb3 white white #97adb3;
+}
+
+.menu-btn:hover {
+  background: rgb(111, 170, 194);
+  background-image: url("./assets/menu-icon.svg");
+} 
+
+.menu-btn:active {
+  border-color: white #97adb3 #97adb3 white;
+  box-shadow: 1px 1px 0px 0px;
 }
 
 .menu.on,
@@ -77,24 +106,29 @@ body {
   transform: translate(0%, -100%);
   background-color: black;
   position: absolute;
+  overflow: auto;
+  overflow-x: hidden;
+  display: flex;
+  height: 60vh;
+  flex-direction: column;
 }
 
 .menu.on {
   width: 80vw;
-  height: 60vh;
-  transition: all 0.2s ease-out;
+  animation: slideIn 0.5s ease-in forwards;
 }
 
 .menu.off {
-  width: 0;
-  height: 0;
-  transition: all 0.2s ease-in;
+  /* transition: all 5s ease-in; */
+  overflow: hidden;
+  animation: slideOut 0.5s ease-out forwards;
 }
 
 .small-view.on,
 .small-view.off {
   color: aliceblue;
   display: grid;
+  position: relative;
   grid-auto-flow: column;
   justify-content: space-between;
   padding: 10px;
@@ -105,30 +139,68 @@ body {
   grid-template-areas:
     "location temp"
     "city temp";
+  width: auto;
+  flex: 0;
+}
+
+@keyframes slideOut {
+  from {
+    width: 80vw;
+  }
+
+  to {
+    width: 0;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 80vw;
+  }
+}
+
+@keyframes vanish {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .search-wrapper.on,
 .search-wrapper.off {
-  position: relative;
   margin: 0 5px;
   display: flex;
+  flex-wrap: nowrap;
+  position: relative;
 }
 
 .search-wrapper.on,
 .small-view.on {
-  width: auto;
-  height: auto;
-  visibility: visible;
-  transition: all 0.2s ease-out;
+  opacity: 0;
+  animation: appear 1s forwards 0.5s;
+  /* animation-delay: s; */
 }
 
 .search-wrapper.off,
 .small-view.off {
-  width: 0;
-  height: 0;
-  visibility: hidden;
-  display: none;
-  transition: all 0.2s ease-in;
+  animation: vanish 0.1s forwards 0.2s;
 }
 
 input#city {
@@ -142,7 +214,6 @@ input#city {
 }
 
 .delete-btn {
-
 }
 
 .search-btn {
@@ -150,9 +221,7 @@ input#city {
   background-size: cover;
 }
 
-.me
-
-.small-view > .location-field {
+.me .small-view > .location-field {
   grid-area: location;
 }
 
