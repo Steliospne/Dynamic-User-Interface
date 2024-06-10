@@ -1,32 +1,32 @@
-import WeatherCard from "./WeatherCard";
+import { dummyLocation, dummyWeather } from ".";
+import APIs from "./APIs";
+import NavBar from "./navBar";
 
 export default class Views {
   static small = [];
   static big = [];
+  static storedViews = [];
   static counterBig = 0;
   static counterSmall = 0;
 
-  static init() {
-    const initialView = new WeatherCard();
-    const displayContainer = document.createElement("div");
-    displayContainer.className = "display-container";
-    document.body.append(displayContainer);
+  static async init() {
+    try {
+      const displayContainer = document.createElement("div");
+      displayContainer.className = "display-container";
+      document.body.append(displayContainer);
+      await APIs.getLocalWeather();
+      if (localStorage.length !== 0) {
+        Views.storedViews = JSON.parse(localStorage.getItem("Stored_views"));
 
-    Views.setView(initialView);
-    // Views.big.push(initialView);
-    // Views.big.forEach((obj) => {
-    //   obj.id = Views.counterBig;
-    //   obj.bigCard.id = Views.counterBig;
-    //   Views.counterBig++;
-    //   Views.render(obj.bigCard);
-    // });
-
-    // Views.small.push(initialView.getSmallCard());
-    // Views.small.forEach((view) => {
-    //   view.id = Views.counterSmall;
-    //   view.className = "small-view off";
-    //   Views.counterSmall++;
-    // });
+        for (let locationName of Views.storedViews) {
+          let tempObj = await APIs.getWeather(locationName);
+          NavBar.smallCardHandlers(tempObj);
+        }
+      }
+      Views.render(Views.big);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   static getSmallViews() {
@@ -39,24 +39,24 @@ export default class Views {
   }
 
   static setView(view) {
+    view.id = Views.counterBig;
+    view.bigCard.id = Views.counterBig;
+    view.smallCard.id = Views.counterSmall;
+    view.smallCard.classList.add("small-view", "on");
+    Views.counterBig++;
+    Views.counterSmall++;
     Views.big.push(view);
-    Views.big.forEach((obj) => {
-      obj.id = Views.counterBig;
-      obj.bigCard.id = Views.counterBig;
-      Views.counterBig++;
-      Views.render(obj.bigCard);
-    });
     Views.small.push(view.getSmallCard());
-    Views.small.forEach((view) => {
-      view.id = Views.counterSmall;
-      view.className = "small-view on";
-      Views.counterSmall++;
+  }
+
+  static render(array) {
+    const displayContainer = document.querySelector(".display-container");
+    array.forEach((view) => {
+      displayContainer.append(view.bigCard);
     });
   }
 
-  static render(view) {
-    const displayContainer = document.querySelector(".display-container");
-    // displayContainer.innerHTML = "";
-    displayContainer.append(view);
+  static update() {
+    setInterval(() => {}, 30 * 60000);
   }
 }
