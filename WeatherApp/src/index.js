@@ -1,15 +1,12 @@
 import "./style.css";
-import getLocation from "./locationAPI";
-import getWeatherData from "./weatherAPI";
-import WeatherCard from "./WeatherCard";
 import NavBar from "./navBar";
 import Views from "./views";
 
-const dummyLocation = {
+export const dummyLocation = {
   city: "Schiedam",
 };
 
-const dummyWeather = {
+export const dummyWeather = {
   current: {
     temp_c: 15,
     condition: {
@@ -34,23 +31,6 @@ export function sendData() {
   ];
   return data;
 }
-async function getherData() {
-  try {
-    // let locationData = await getLocation();
-    // let weatherData = await getWeatherData(locationData.city);
-    // let weatherData = await getWeatherData("Schiedam");
-    // let weatherData2 = await getWeatherData("London");
-    // localStorage.setItem("weatherData",JSON.stringify(weatherData))
-    // localStorage.setItem("weatherData2",JSON.stringify(weatherData2))
-    // WeatherCard.set(locationData, weatherData);
 
-    // Test to not waste API calls
-    Views.big[0].set(dummyLocation, dummyWeather);
-  } catch (error) {
-    throw error;
-  }
-}
-
-Views.init();
-getherData();
+Views.init()
 NavBar.create();
