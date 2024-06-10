@@ -5,23 +5,48 @@ export default class WeatherCard {
     this.weatherData = "";
     this.bigCard = WeatherCard.create();
     this.smallCard = WeatherCard.createHeader();
-    this.location = "";
+    this.name = "My Location";
   }
 
-  set(locationData, weatherData) {
-    this.locationData = locationData;
+  setData(weatherData) {
+    this.name === "My Location"
+      ? (this.locationData = weatherData.location.name)
+      : (this.locationData = weatherData.location.country);
+
     this.weatherData = weatherData;
 
-    this.bigCard.firstChild.childNodes[1].textContent = this.locationData.city;
-    this.bigCard.firstChild.childNodes[2].innerHTML = `${this.weatherData.current.temp_c} &deg C | ${this.weatherData.current.condition.text}`;
+    const condition = this.weatherData.current.condition.text;
+    const queryCondition = condition.toLowerCase();
 
-    this.smallCard.childNodes[1].textContent = this.locationData.city;
-    this.smallCard.childNodes[2].innerHTML = `${this.weatherData.current.temp_c} &deg C | ${this.weatherData.current.condition.text}`;
+    const conditions = [
+      { condition: "sunny", className: "sunny" },
+      { condition: "partly cloudy", className: "partly-cloudy" },
+      { condition: ["cloudy", "overcast"], className: "cloudy" },
+      { condition: "rain", className: "rain" },
+    ];
+    
+    conditions.forEach(({ condition, className }) => {
+      if (Array.isArray(condition)) {
+        if (condition.some(cond => queryCondition.includes(cond))) {
+          this.bigCard.classList.add(className);
+          this.smallCard.classList.add(className);
+        }
+      } else if (queryCondition.includes(condition)) {
+        this.bigCard.classList.add(className);
+        this.smallCard.classList.add(className);
+      }
+    });
+
+    this.bigCard.firstChild.childNodes[1].textContent = this.locationData;
+    this.bigCard.firstChild.childNodes[2].innerHTML = `${this.weatherData.current.temp_c} &deg C | ${condition}`;
+
+    this.smallCard.childNodes[1].textContent = this.locationData;
+    this.smallCard.childNodes[2].innerHTML = `${this.weatherData.current.temp_c} &deg C | ${condition}`;
   }
 
-  setLocation(location) {
-    this.location = location;
-    this.smallCard.childNodes[0].textContent = this.location;
+  setName(name) {
+    this.name = name;
+    this.smallCard.childNodes[0].textContent = this.name;
   }
 
   getBigCard() {
