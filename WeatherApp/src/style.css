@@ -132,6 +132,7 @@ body {
 .menu.off {
   /* transition: all 5s ease-in; */
   overflow: hidden;
+  display: none;
   animation: slideOut 0.5s ease-out forwards;
 }
 
@@ -157,10 +158,12 @@ body {
 @keyframes slideOut {
   from {
     width: 80vw;
+    display: flex;
   }
 
   to {
     width: 0;
+    display: none;
   }
 }
 
@@ -170,6 +173,7 @@ body {
   }
 
   to {
+    display: flex;
     width: 80vw;
   }
 }
