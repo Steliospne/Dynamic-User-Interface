@@ -1,4 +1,3 @@
-import WeatherCard from "./WeatherCard";
 import Views from "./views";
 import { swipedetect } from "./touch";
 import APIs from "./APIs";
@@ -64,14 +63,12 @@ export default class NavBar {
     const searchWrapper = document.createElement("div");
     const inputCity = document.createElement("input");
     const searchButton = document.createElement("button");
-    // const smallCardWrapper = document.createElement("div");
 
     searchWrapper.className = "search-wrapper off";
     inputCity.id = "city";
     inputCity.name = "city";
     inputCity.placeholder = "Search for city or town";
     searchButton.className = "search-btn";
-    // smallCardWrapper.className = "small-card-wrapper";
 
     searchWrapper.append(inputCity, searchButton);
     menu.append(searchWrapper);
@@ -88,7 +85,7 @@ export default class NavBar {
         const card = await APIs.getWeather(input);
         NavBar.smallCardHandlers(card);
         menu.append(card.smallCard);
-        Views.render(Views.big)
+        Views.render(Views.big);
         inputCity.value = "";
         Views.storedViews.push(input);
         localStorage.setItem("Stored_views", JSON.stringify(Views.storedViews));
@@ -143,5 +140,25 @@ export default class NavBar {
         }
       });
     }
+
+    function clickOnCardHandler(event) {
+      let target = event.target.outerHTML;
+      target.includes("small-view")
+        ? (target = event.target)
+        : (target = event.target.parentElement);
+      const targetId = target.id;
+      const displayList = Array.from(
+        document.querySelector(".display-container").childNodes
+      );
+      displayList.forEach((card) => {
+        if (card.id == targetId) {
+          card.setAttribute("style", "display: flex");
+        } else {
+          card.setAttribute("style", "display: none");
+        }
+      });
+    }
+
+    card.smallCard.addEventListener("click", clickOnCardHandler);
   }
 }

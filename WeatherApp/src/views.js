@@ -1,4 +1,3 @@
-import { dummyLocation, dummyWeather } from ".";
 import APIs from "./APIs";
 import NavBar from "./navBar";
 
@@ -23,6 +22,24 @@ export default class Views {
           NavBar.smallCardHandlers(tempObj);
         }
       }
+      function clickOnCardHandler(event) {
+        let target = event.target.outerHTML;
+        target.includes("small-view")
+          ? (target = event.target)
+          : (target = event.target.parentElement);
+        const targetId = target.id;
+        const displayList = Array.from(
+          document.querySelector(".display-container").childNodes
+        );
+        displayList.forEach((card) => {
+          if (card.id == targetId) {
+            card.setAttribute("style", "display: flex");
+          } else {
+            card.setAttribute("style", "display: none");
+          }
+        });
+      }
+      Views.big[0].smallCard.addEventListener("click", clickOnCardHandler);
       Views.render(Views.big);
     } catch (error) {
       console.log(error);
