@@ -34,8 +34,11 @@ export default class Views {
   }
 
   static deleteView(id) {
+    Views.storedViews = Views.storedViews.filter(
+      (item) => item !== Views.big.filter((view) => view.id === +id)[0].name);
     Views.big = Views.big.filter((view) => view.id !== +id);
     Views.small = Views.small.filter((view) => view.id !== id);
+    localStorage.setItem("Stored_views", JSON.stringify(Views.storedViews));
   }
 
   static setView(view) {
