@@ -4,6 +4,17 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: Kanit-light;
+}
+
+@font-face{
+  font-family: Kanit-heavy;
+  src: url('/src/assets/fonts/Kanit-Black.ttf');
+}
+
+@font-face{
+  font-family: Kanit-light;
+  src: url('/src/assets/fonts/Kanit-Light.ttf');
 }
 
 body {
