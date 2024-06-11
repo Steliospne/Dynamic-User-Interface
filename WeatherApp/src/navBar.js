@@ -86,7 +86,6 @@ export default class NavBar {
         let input = inputCity.value;
         if (!input) return;
         const card = await APIs.getWeather(input);
-        console.log(card);
         NavBar.smallCardHandlers(card);
         menu.append(card.smallCard);
         Views.render(Views.big)
