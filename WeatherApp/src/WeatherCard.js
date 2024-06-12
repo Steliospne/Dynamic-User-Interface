@@ -49,11 +49,18 @@ export default class WeatherCard {
     this.smallCard.childNodes[2].innerHTML = `${this.weatherData.current.temp_c} &deg C | ${condition}`;
 
     // Hourly forecast list
-    const hourlyDataList = this.weatherData.forecast.forecastday[0].hour
-    const hourlyCardList = this.bigCard.childNodes[1].childNodes
-    hourlyCardList.forEach(card => {
-      card.style.backgroundImage = `url(${hourlyDataList[card.classList[1]].condition.icon})`
-    })
+    const hourlyDataList = this.weatherData.forecast.forecastday[0].hour;
+    const hourlyCardList = this.bigCard.childNodes[1].childNodes;
+    hourlyCardList.forEach((card) => {
+      const conditionIcon = card.childNodes[1]
+      const avgTemp = card.childNodes[2]
+      const index = card.classList[1]
+      conditionIcon.style.backgroundImage = `url(${
+        hourlyDataList[index].condition.icon
+      })`;
+
+      avgTemp.textContent = Math.floor(hourlyDataList[index].temp_c) + "°C"
+    });
     // console.log(this.weatherData.forecast.forecastday[0].hour)
 
     // 3-Day forecast
@@ -87,9 +94,9 @@ export default class WeatherCard {
   static create() {
     const cardContainer = document.createElement("div");
     const cardHeader = WeatherCard.createHeader();
-    const forecastContainer = WeatherCard.hourlyForecast()
+    const forecastContainer = WeatherCard.hourlyForecast();
     cardContainer.className = "card-container";
-    cardContainer.append(cardHeader,forecastContainer);
+    cardContainer.append(cardHeader, forecastContainer);
 
     return cardContainer;
   }
@@ -112,13 +119,23 @@ export default class WeatherCard {
 
   static hourlyForecast() {
     const forecastContainer = document.createElement("div");
-    forecastContainer.className = "forecast-hourly"
-    for (let hour = 0; hour < 24; hour++){
+    forecastContainer.className = "forecast-hourly";
+    for (let hour = 0; hour < 24; hour++) {
       const hourCard = document.createElement("div");
-      hourCard.className = "hour " + hour
-      forecastContainer.append(hourCard)
+      const hourField = document.createElement("div");
+      const conditionIcon = document.createElement("div");
+      const avgTemp = document.createElement("div");
+      hourCard.className = "hour " + hour;
+      hourField.className = "hour-field";
+      conditionIcon.className = "condition-icon";
+      avgTemp.className = "avg-temp";
+
+      hourField.textContent = hour
+
+      hourCard.append(hourField, conditionIcon, avgTemp);
+      forecastContainer.append(hourCard);
     }
-    return forecastContainer
+    return forecastContainer;
   }
 
   static _3dayForecast() {}

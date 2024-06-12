@@ -7,14 +7,14 @@
   font-family: Kanit-light;
 }
 
-@font-face{
+@font-face {
   font-family: Kanit-heavy;
-  src: url('/src/assets/fonts/Kanit-Black.ttf');
+  src: url("/src/assets/fonts/Kanit-Black.ttf");
 }
 
-@font-face{
+@font-face {
   font-family: Kanit-light;
-  src: url('/src/assets/fonts/Kanit-Light.ttf');
+  src: url("/src/assets/fonts/Kanit-Light.ttf");
 }
 
 body {
@@ -37,11 +37,12 @@ body {
 
 .forecast-hourly {
   width: 80vw;
-  height: 30vh;
-  border: black solid 3px;
   display: grid;
   grid-auto-flow: column;
   overflow: auto;
+  background-color: #0000003d;
+  border-radius: 20px;
+  margin-top: 50px;
 }
 
 .forecast-hourly::-webkit-scrollbar {
@@ -49,14 +50,31 @@ body {
 }
 
 .hour {
-  border: black solid 3px;
-  width: calc(80vw/6);
+  width: calc(80vw / 6);
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
+.hour-field,
+.avg-temp {
+  padding: 5px;
+  color: white;
+}
 
+.condition-icon {
+  width: 64px;
+  height: 64px;
+}
+
+.avg-temp {
+  font-size: 1.1rem;
+}
 
 .small-view.on,
 .card-container {
@@ -96,7 +114,7 @@ body {
 .card-header > .city-field,
 .card-header > .tempStatus-field {
   color: white;
-} 
+}
 
 .card-header > .location-field {
   grid-area: location;
@@ -108,7 +126,6 @@ body {
   grid-area: city;
   font-size: 1.2rem;
   font-weight: 100;
-
 }
 
 .card-header > .tempStatus-field {
@@ -137,7 +154,7 @@ body {
   position: relative;
   top: -100px;
   height: 100px;
-  background-color: rgba(0, 0, 0, 0.24);
+  background-color: #0000003d;
 }
 
 .menu-btn {
@@ -154,7 +171,7 @@ body {
 .menu-btn:hover {
   background: rgb(111, 170, 194);
   background-image: url("./assets/menu-icon.svg");
-} 
+}
 
 .menu-btn:active {
   border-color: white #97adb3 #97adb3 white;
@@ -279,7 +296,7 @@ input#city {
 
 .delete-btn {
   background-color: transparent;
-  background-image: url('./assets/delete-btn.svg');
+  background-image: url("./assets/delete-btn.svg");
   background-size: cover;
   width: 25px;
   height: 25px;
