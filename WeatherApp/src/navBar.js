@@ -143,6 +143,7 @@ export default class NavBar {
 
     function clickOnCardHandler(event) {
       let target = event.target.outerHTML;
+      if(target.includes("button")) return
       target.includes("small-view")
         ? (target = event.target)
         : (target = event.target.parentElement);
@@ -160,5 +161,6 @@ export default class NavBar {
     }
 
     card.smallCard.addEventListener("click", clickOnCardHandler);
+    card.smallCard.addEventListener("touchstart", clickOnCardHandler);
   }
 }
