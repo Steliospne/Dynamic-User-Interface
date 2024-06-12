@@ -35,6 +35,29 @@ body {
   align-items: center;
 }
 
+.forecast-hourly {
+  width: 80vw;
+  height: 30vh;
+  border: black solid 3px;
+  display: grid;
+  grid-auto-flow: column;
+  overflow: auto;
+}
+
+.forecast-hourly::-webkit-scrollbar {
+  display: none;
+}
+
+.hour {
+  border: black solid 3px;
+  width: calc(80vw/6);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+
+
 .small-view.on,
 .card-container {
   height: 100%;
@@ -59,24 +82,50 @@ body {
   background-image: url("./assets/partly-cloudy.jpg");
 }
 
+.small-view.night,
+.card-container.night {
+  background-image: url("./assets/night.jpg");
+}
+
 .card-header {
-  border: 6px solid black;
   padding: 10px;
   gap: 10px;
 }
 
+.card-header > .location-field,
+.card-header > .city-field,
+.card-header > .tempStatus-field {
+  color: white;
+} 
+
 .card-header > .location-field {
   grid-area: location;
   font-size: 1.5rem;
+  font-weight: 900;
 }
 
 .card-header > .city-field {
   grid-area: city;
+  font-size: 1.2rem;
+  font-weight: 100;
+
 }
 
 .card-header > .tempStatus-field {
   grid-area: temp;
   grid-row: span 1;
+}
+
+.small-view > .location-field {
+  font-size: 1rem;
+}
+
+.small-view > .city-field {
+  font-size: 0.8rem;
+}
+
+.small-view > .tempStatus-field {
+  font-size: 0.8rem;
 }
 
 .card-header,
@@ -115,7 +164,7 @@ body {
 .menu.on,
 .menu.off {
   transform: translate(0%, -100%);
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.589);
   position: absolute;
   overflow: auto;
   overflow-x: hidden;
@@ -149,15 +198,15 @@ body {
   grid-template-columns: 1fr auto;
   gap: 0 10px;
   grid-template-areas:
-    "location temp"
-    "city temp";
+    "location temp delete"
+    "city temp delete";
   width: auto;
   flex: 0;
 }
 
 @keyframes slideOut {
   from {
-    width: 80vw;
+    width: 100vw;
     display: flex;
   }
 
@@ -174,7 +223,7 @@ body {
 
   to {
     display: flex;
-    width: 80vw;
+    width: 100vw;
   }
 }
 
@@ -215,7 +264,7 @@ body {
 
 .search-wrapper.off,
 .small-view.off {
-  animation: vanish 0.1s forwards 0.2s;
+  animation: vanish 0.1s forwards;
 }
 
 input#city {
@@ -229,6 +278,13 @@ input#city {
 }
 
 .delete-btn {
+  background-color: transparent;
+  background-image: url('./assets/delete-btn.svg');
+  background-size: cover;
+  width: 25px;
+  height: 25px;
+  border: none;
+  grid-area: delete;
 }
 
 .search-btn {
