@@ -51,11 +51,19 @@ export default class Views {
   }
 
   static deleteView(id) {
-    Views.storedViews = Views.storedViews.filter(
-      (item) => item !== Views.big.filter((view) => view.id === +id)[0].name);
+    Views.storedViews = Views.storedViews.filter((item) => item !== Views.big.filter((view) => view.id === +id)[0].name);
     Views.big = Views.big.filter((view) => view.id !== +id);
     Views.small = Views.small.filter((view) => view.id !== id);
     localStorage.setItem("Stored_views", JSON.stringify(Views.storedViews));
+    const displayList = Array.from(document.querySelector(".display-container").childNodes);
+    const target = displayList[displayList.length - 2]
+    displayList.forEach((card) => {
+      if (card.id == target.id) {
+        card.setAttribute("style", "display: flex");
+      } else {
+        card.setAttribute("style", "display: none");
+      }
+    });
   }
 
   static setView(view) {
