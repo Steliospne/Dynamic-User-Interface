@@ -17,31 +17,52 @@ export default class WeatherCard {
 
     const condition = this.weatherData.current.condition.text;
     const queryCondition = condition.toLowerCase();
-
+    const isDay = this.weatherData.current.is_day;
     const conditions = [
       { condition: "sunny", className: "sunny" },
       { condition: "partly cloudy", className: "partly-cloudy" },
       { condition: ["cloudy", "overcast"], className: "cloudy" },
       { condition: "rain", className: "rain" },
     ];
-    
-    conditions.forEach(({ condition, className }) => {
-      if (Array.isArray(condition)) {
-        if (condition.some(cond => queryCondition.includes(cond))) {
+    if (isDay) {
+      conditions.forEach(({ condition, className }) => {
+        if (Array.isArray(condition)) {
+          if (condition.some((cond) => queryCondition.includes(cond))) {
+            this.bigCard.classList.add(className);
+            this.smallCard.classList.add(className);
+          }
+        } else if (queryCondition.includes(condition)) {
           this.bigCard.classList.add(className);
           this.smallCard.classList.add(className);
         }
-      } else if (queryCondition.includes(condition)) {
-        this.bigCard.classList.add(className);
-        this.smallCard.classList.add(className);
-      }
-    });
+      });
+    } else {
+      this.bigCard.classList.add("night");
+      this.smallCard.classList.add("night");
+    }
 
+    this.bigCard.firstChild.childNodes[0].textContent = this.name;
     this.bigCard.firstChild.childNodes[1].textContent = this.locationData;
     this.bigCard.firstChild.childNodes[2].innerHTML = `${this.weatherData.current.temp_c} &deg C | ${condition}`;
 
     this.smallCard.childNodes[1].textContent = this.locationData;
     this.smallCard.childNodes[2].innerHTML = `${this.weatherData.current.temp_c} &deg C | ${condition}`;
+
+    // Hourly forecast list
+    const hourlyDataList = this.weatherData.forecast.forecastday[0].hour
+    const hourlyCardList = this.bigCard.childNodes[1].childNodes
+    hourlyCardList.forEach(card => {
+      card.style.backgroundImage = `url(${hourlyDataList[card.classList[1]].condition.icon})`
+    })
+    // console.log(this.weatherData.forecast.forecastday[0].hour)
+
+    // 3-Day forecast
+    // const today = this.weatherData.forecast.forecastday[0].day
+    // const tomorrow = this.weatherData.forecast.forecastday[1].day
+    // const afterTomorrow = this.weatherData.forecast.forecastday[2].day
+
+    // console.log(today, tomorrow, afterTomorrow)
+    console.log(isDay);
   }
 
   setName(name) {
@@ -66,8 +87,9 @@ export default class WeatherCard {
   static create() {
     const cardContainer = document.createElement("div");
     const cardHeader = WeatherCard.createHeader();
+    const forecastContainer = WeatherCard.hourlyForecast()
     cardContainer.className = "card-container";
-    cardContainer.append(cardHeader);
+    cardContainer.append(cardHeader,forecastContainer);
 
     return cardContainer;
   }
@@ -88,7 +110,16 @@ export default class WeatherCard {
     return cardHeader;
   }
 
-  static hourlyForecast() {}
+  static hourlyForecast() {
+    const forecastContainer = document.createElement("div");
+    forecastContainer.className = "forecast-hourly"
+    for (let hour = 0; hour < 24; hour++){
+      const hourCard = document.createElement("div");
+      hourCard.className = "hour " + hour
+      forecastContainer.append(hourCard)
+    }
+    return forecastContainer
+  }
 
   static _3dayForecast() {}
 }
