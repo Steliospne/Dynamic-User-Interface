@@ -1,3 +1,5 @@
+import { format } from "date-fns";
+
 export default class WeatherCard {
   constructor() {
     this.id;
@@ -52,24 +54,47 @@ export default class WeatherCard {
     const hourlyDataList = this.weatherData.forecast.forecastday[0].hour;
     const hourlyCardList = this.bigCard.childNodes[1].childNodes;
     hourlyCardList.forEach((card) => {
-      const conditionIcon = card.childNodes[1]
-      const avgTemp = card.childNodes[2]
-      const index = card.classList[1]
-      conditionIcon.style.backgroundImage = `url(${
-        hourlyDataList[index].condition.icon
-      })`;
+      const conditionIcon = card.childNodes[1];
+      const avgTemp = card.childNodes[2];
+      const index = card.classList[1];
+      conditionIcon.style.backgroundImage = `url(${hourlyDataList[index].condition.icon})`;
 
-      avgTemp.textContent = Math.floor(hourlyDataList[index].temp_c) + "°C"
+      avgTemp.textContent = Math.floor(hourlyDataList[index].temp_c) + "°C";
     });
-    // console.log(this.weatherData.forecast.forecastday[0].hour)
 
     // 3-Day forecast
-    // const today = this.weatherData.forecast.forecastday[0].day
-    // const tomorrow = this.weatherData.forecast.forecastday[1].day
-    // const afterTomorrow = this.weatherData.forecast.forecastday[2].day
+    const today = ["Today", this.weatherData.forecast.forecastday[0].day];
+    const tomorrow = [
+      this.weatherData.forecast.forecastday[1].date,
+      this.weatherData.forecast.forecastday[1].day,
+    ];
+    const afterTomorrow = [
+      this.weatherData.forecast.forecastday[2].date,
+      this.weatherData.forecast.forecastday[2].day,
+    ];
 
-    // console.log(today, tomorrow, afterTomorrow)
-    console.log(isDay);
+    const dailyData = [today, tomorrow, afterTomorrow];
+
+    const dailyCardList = this.bigCard.childNodes[2].childNodes;
+    dailyCardList.forEach((card) => {
+      const dayField = card.childNodes[0];
+      const conditionIcon = card.childNodes[1];
+      const lowTemp = card.childNodes[2];
+      const highTemp = card.childNodes[3];
+      const index = card.classList[1];
+
+      if (index == "0") {
+        dayField.textContent = dailyData[index][0];
+      } else {
+        dayField.textContent = format(dailyData[index][0],"iiii");
+      }
+
+      lowTemp.textContent = `Low: ${Math.floor(dailyData[index][1].mintemp_c)}`   
+      highTemp.textContent = `High: ${Math.floor(dailyData[index][1].maxtemp_c)}` 
+
+
+      conditionIcon.style.backgroundImage = `url(${dailyData[index][1].condition.icon})`;
+    });
   }
 
   setName(name) {
@@ -95,8 +120,10 @@ export default class WeatherCard {
     const cardContainer = document.createElement("div");
     const cardHeader = WeatherCard.createHeader();
     const forecastContainer = WeatherCard.hourlyForecast();
+    const dailyForecastContainer = WeatherCard._3dayForecast();
+
     cardContainer.className = "card-container";
-    cardContainer.append(cardHeader, forecastContainer);
+    cardContainer.append(cardHeader, forecastContainer, dailyForecastContainer);
 
     return cardContainer;
   }
@@ -130,7 +157,7 @@ export default class WeatherCard {
       conditionIcon.className = "condition-icon";
       avgTemp.className = "avg-temp";
 
-      hourField.textContent = hour
+      hourField.textContent = hour;
 
       hourCard.append(hourField, conditionIcon, avgTemp);
       forecastContainer.append(hourCard);
@@ -138,5 +165,24 @@ export default class WeatherCard {
     return forecastContainer;
   }
 
-  static _3dayForecast() {}
+  static _3dayForecast() {
+    const dailyForecastContainer = document.createElement("div");
+    dailyForecastContainer.className = "daily-forecast";
+    for (let days = 0; days < 3; days++) {
+      const dailyCard = document.createElement("div");
+      const dayField = document.createElement("div");
+      const conditionIcon = document.createElement("div");
+      const lowTemp = document.createElement("div");
+      const highTemp = document.createElement("div");
+      dailyCard.className = "daily-card " + days;
+      dayField.className = "day-field";
+      conditionIcon.className = "forecast-condition-icon";
+      lowTemp.className = "low-temp";
+      highTemp.className = "high-temp";
+
+      dailyCard.append(dayField, conditionIcon, lowTemp, highTemp);
+      dailyForecastContainer.append(dailyCard);
+    }
+    return dailyForecastContainer;
+  }
 }
