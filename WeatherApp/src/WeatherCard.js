@@ -24,7 +24,7 @@ export default class WeatherCard {
       { condition: "sunny", className: "sunny" },
       { condition: "partly cloudy", className: "partly-cloudy" },
       { condition: ["cloudy", "overcast"], className: "cloudy" },
-      { condition: "rain", className: "rain" },
+      { condition: ["rain", "drizzle"], className: "rain" },
     ];
     if (isDay) {
       conditions.forEach(({ condition, className }) => {
@@ -43,12 +43,14 @@ export default class WeatherCard {
       this.smallCard.classList.add("night");
     }
 
+    const tempC = Math.floor(this.weatherData.current.temp_c);
+
     this.bigCard.firstChild.childNodes[0].textContent = this.name;
     this.bigCard.firstChild.childNodes[1].textContent = this.locationData;
-    this.bigCard.firstChild.childNodes[2].innerHTML = `${this.weatherData.current.temp_c} &deg C | ${condition}`;
+    this.bigCard.firstChild.childNodes[2].innerHTML = `${tempC} &deg C | ${condition}`;
 
     this.smallCard.childNodes[1].textContent = this.locationData;
-    this.smallCard.childNodes[2].innerHTML = `${this.weatherData.current.temp_c} &deg C | ${condition}`;
+    this.smallCard.childNodes[2].innerHTML = `${tempC} &deg C | ${condition}`;
 
     // Hourly forecast list
     const hourlyDataList = this.weatherData.forecast.forecastday[0].hour;
@@ -74,8 +76,9 @@ export default class WeatherCard {
     ];
 
     const dailyData = [today, tomorrow, afterTomorrow];
-
     const dailyCardList = this.bigCard.childNodes[2].childNodes;
+    const screenWidth = window.screen.availWidth;
+
     dailyCardList.forEach((card) => {
       const dayField = card.childNodes[0];
       const conditionIcon = card.childNodes[1];
@@ -86,12 +89,23 @@ export default class WeatherCard {
       if (index == "0") {
         dayField.textContent = dailyData[index][0];
       } else {
-        dayField.textContent = format(dailyData[index][0],"iiii");
+        dayField.textContent = format(dailyData[index][0], "iiii");
       }
 
-      lowTemp.textContent = `Low: ${Math.floor(dailyData[index][1].mintemp_c)}`   
-      highTemp.textContent = `High: ${Math.floor(dailyData[index][1].maxtemp_c)}` 
-
+      screenWidth < 750
+        ? (lowTemp.textContent = `L: ${Math.floor(
+            dailyData[index][1].mintemp_c
+          )}`)
+        : (lowTemp.textContent = `Low: ${Math.floor(
+            dailyData[index][1].mintemp_c
+          )}`);
+      screenWidth < 750
+        ? (highTemp.textContent = `H: ${Math.floor(
+            dailyData[index][1].maxtemp_c
+          )}`)
+        : (highTemp.textContent = `High: ${Math.floor(
+            dailyData[index][1].maxtemp_c
+          )}`);
 
       conditionIcon.style.backgroundImage = `url(${dailyData[index][1].condition.icon})`;
     });
